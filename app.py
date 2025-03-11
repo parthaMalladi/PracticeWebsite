@@ -10,12 +10,16 @@ app = Flask(__name__)
 dynamodb = boto3.resource('dynamodb', region_name='us-east-2')
 table = dynamodb.Table('MyTable')
 
-loggedIn = True
+loggedIn = False
 user = ""
 
 @app.route('/')
 def index():
     return render_template('index.html', loggedIn=loggedIn, user=user)
+
+@app.route('/features')
+def features():
+    return render_template('features.html', loggedIn=loggedIn, user=user)
 
 if __name__ == '__main__':
     app.run(debug=True)
