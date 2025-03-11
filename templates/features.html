@@ -35,25 +35,7 @@
         </div>
     </header>
 
-    <div class="px-4 pt-5 my-5 text-center border-bottom">
-        <h1 class="display-4 fw-bold text-body-emphasis">To-Do Clock</h1>
-        <div class="col-lg-6 mx-auto">
-          <p class="lead mb-4">The To-Do Clock is a website that allows users to set tasks that they need to do for the day. The website organizes the tasks in a 24-hour clock interface that enables the user to see how their tasks are arranged for the day and whether they have been completed.</p>
-          <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
-            <button type="button" class="btn btn-info btn-lg px-4 me-sm-3">Features</button>
-            {% if loggedIn == False %}
-              <a href="/signUp"><button type="button" class="btn btn-outline-secondary btn-lg px-4">Sign-up</button></a>
-            {% else %}
-              <a href="/clock"><button type="button" class="btn btn-outline-light me-2">To-Do Clock</button></a>
-            {% endif %}
-          </div>
-        </div>
-        <div class="overflow-hidden" style="max-height: 62vh;">
-          <div class="container px-5">
-            <img src="{{ url_for('static', filename='images/ToDoImage.webp') }}" class="img-fluid border rounded-3 shadow-lg mb-4" alt="Example image" width="900" height="900" loading="lazy">
-          </div>
-        </div>
-    </div>
+    
 
     <div class="container">
         <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
