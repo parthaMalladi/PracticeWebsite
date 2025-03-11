@@ -8,7 +8,8 @@ app = Flask(__name__)
 
 # Connect to DynamoDB
 dynamodb = boto3.resource('dynamodb', region_name='us-east-2')
-table = dynamodb.Table('MyTable')
+usersTable = dynamodb.Table("Users")
+tasksTable = dynamodb.Table("Tasks")
 
 loggedIn = False
 user = ""
@@ -20,6 +21,22 @@ def index():
 @app.route('/features')
 def features():
     return render_template('features.html', loggedIn=loggedIn, user=user)
+
+@app.route('/login')
+def login():
+    return render_template('login.html', loggedIn=loggedIn, user=user)
+
+@app.route('/signUp')
+def signUp():
+    return render_template('signUp.html', loggedIn=loggedIn, user=user)
+
+@app.route('/clock')
+def clock():
+    return render_template('clock.html', loggedIn=loggedIn, user=user)
+
+@app.route('/edit')
+def edit():
+    return render_template('edit.html', loggedIn=loggedIn, user=user)
 
 if __name__ == '__main__':
     app.run(debug=True)
