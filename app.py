@@ -2,7 +2,7 @@ import os
 import boto3
 import uuid
 
-from flask import Flask, render_template, request, url_for
+from flask import Flask, render_template, request, url_for, redirect
 
 app = Flask(__name__)
 
@@ -22,13 +22,53 @@ def index():
 def features():
     return render_template('features.html', loggedIn=loggedIn, user=user)
 
-@app.route('/login')
+@app.route('/login', methods=["GET", "POST"])
 def login():
-    return render_template('login.html', loggedIn=loggedIn, user=user)
+    loginFeedback = "DNE"
+    global loggedIn, user
 
-@app.route('/signUp')
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+
+        response = usersTable.get_item(Key={"username": username})
+        if "Item" in response:
+            storedPassword = response["Item"]["password"]
+            if password == storedPassword:
+                loggedIn = True
+                user = username
+                return redirect(url_for("index"))
+            else:
+                loginFeedback = "passwordDNE"
+        else:
+            loginFeedback = "userDNE"
+
+    return render_template('login.html', loginFeedback=loginFeedback)
+
+@app.route('/signUp', methods=["GET", "POST"])
 def signUp():
-    return render_template('signUp.html', loggedIn=loggedIn, user=user)
+    accountStatus = "DNE"
+
+    if request.method == "POST":
+        username = request.form["username"]
+        email = request.form["email"]
+        password = request.form["password"]
+
+        response = usersTable.get_item(Key={"username": username})
+
+        if "Item" in response:
+            return render_template("signup.html", accountStatus="Exists")
+
+        usersTable.put_item(
+             Item={
+                "username": username,
+                "email": email,
+                "password": password
+             }
+        )
+        accountStatus = "Created"
+
+    return render_template('signUp.html', accountStatus=accountStatus)
 
 @app.route('/clock')
 def clock():
