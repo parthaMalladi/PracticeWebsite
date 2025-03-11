@@ -24,8 +24,8 @@
     
             <div class="text-end">
               {% if loggedIn == False %}
-                <a href="/login"></a><button type="button" class="btn btn-outline-light me-2">Login</button></a>
-                <a href="/signUp"></a><button type="button" class="btn btn-info">Sign-up</button></a>
+                <a href="/login"><button type="button" class="btn btn-outline-light me-2">Login</button></a>
+                <a href="/signUp"><button type="button" class="btn btn-info">Sign-up</button></a>
               {% else %}
                 <a href="/clock"><button type="button" class="btn btn-outline-light me-2">To-Do Clock</button></a>
                 <a href="/edit"><button type="button" class="btn btn-info">Edit Clock</button></a>
@@ -40,7 +40,7 @@
         <div class="col-lg-6 mx-auto">
           <p class="lead mb-4">The To-Do Clock is a website that allows users to set tasks that they need to do for the day. The website organizes the tasks in a 24-hour clock interface that enables the user to see how their tasks are arranged for the day and whether they have been completed.</p>
           <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
-            <button type="button" class="btn btn-info btn-lg px-4 me-sm-3">Features</button>
+            <a href="/features"><button type="button" class="btn btn-info btn-lg px-4 me-sm-3">Features</button></a>
             {% if loggedIn == False %}
               <a href="/signUp"><button type="button" class="btn btn-outline-secondary btn-lg px-4">Sign-up</button></a>
             {% else %}
