@@ -3,6 +3,7 @@ import boto3
 import uuid
 
 from flask import Flask, render_template, request, url_for, redirect
+from boto3.dynamodb.conditions import Key
 
 app = Flask(__name__)
 
@@ -74,9 +75,46 @@ def signUp():
 def clock():
     return render_template('clock.html', loggedIn=loggedIn, user=user)
 
-@app.route('/edit')
+@app.route('/edit', methods=["GET", "POST", "DELETE"])
 def edit():
-    return render_template('edit.html', loggedIn=loggedIn, user=user)
+    global loggedIn, user
+
+    if request.method == "POST":
+        title = request.form["title"]
+        description = request.form["description"]
+        startTime = request.form["startTime"]
+        endTime = request.form["endTime"]
+
+        tasksTable.put_item(
+             Item={
+                "ID": str(uuid.uuid4()),
+                "user": user,
+                "title": title,
+                "description": description,
+                "startTime": str(startTime),
+                "endTime": str(endTime)
+             }
+        )
+    
+    response = tasksTable.query(
+        IndexName="user-index",
+        KeyConditionExpression=Key("user").eq(user)
+    )
+
+    tasks = response.get("Items", [])
+    return render_template('edit.html', loggedIn=loggedIn, user=user, taskList=tasks)
+
+@app.route('/delete', methods=["POST"])
+def delete():
+    taskID = request.form["taskID"]
+    
+    tasksTable.delete_item(
+        Key={
+            'ID': taskID
+        }
+    )
+
+    return redirect(url_for("edit"))
 
 if __name__ == '__main__':
     app.run(debug=True)
